@@ -7,7 +7,10 @@
 //
 
 #import "AppDelegate.h"
-
+#import "Header.h"
+#import "DCFileTool.h"
+#import "DCHomeVC.h"
+#import "DCPageVC.h"
 @interface AppDelegate ()
 
 @end
@@ -16,11 +19,56 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+//
+    self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+
+    //创建根目录
+    [DCFileTool creatRootDirectory];
+    NSLog(@"%@",DCBooksPath);
+
+//    NSArray *arr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:DCBooksPath error:nil];
+//    NSLog(@"arr = %@",arr);
+    
+    //设置默认信息
+    if(![[NSUserDefaults standardUserDefaults] objectForKey:DCReadMode])
+    {
+        [[NSUserDefaults standardUserDefaults] setObject:DCReadDefaultMode forKey:DCReadMode];
+    }
+    
+    DCHomeVC *vc = [[DCHomeVC alloc]init];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    self.window.rootViewController = nav;
     return YES;
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    if (url)
+    {
 
+        NSString *fileNameStr = [url lastPathComponent];
+        fileNameStr = [fileNameStr stringByRemovingPercentEncoding];
+        
+        NSString *toPath = [DCBooksPath stringByAppendingPathComponent:fileNameStr];
+       
+        NSData *data = [NSData dataWithContentsOfURL:url];
+        [data writeToFile:toPath atomically:YES];
+        
+        
+        //用阅读器打开这个文件
+        DCPageVC *vc = [[DCPageVC alloc]init];
+        vc.filePath = toPath;
+        UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+        [nav.topViewController.navigationController pushViewController:vc animated:YES];
+        
+    }
+    
+    
+    
+    return YES;
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
