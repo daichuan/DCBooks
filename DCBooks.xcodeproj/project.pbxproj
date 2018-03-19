@@ -47,6 +47,9 @@
 		EF80679D2057ADF5003CF9D1 /* DCPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = EF80679C2057ADF5003CF9D1 /* DCPageView.m */; };
 		EF8067A02057C287003CF9D1 /* DCFlipAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = EF80679F2057C287003CF9D1 /* DCFlipAnimation.m */; };
 		EFA2ACD4205F8802009B8449 /* 龙王传说.txt in Resources */ = {isa = PBXBuildFile; fileRef = EFA2ACD3205F8802009B8449 /* 龙王传说.txt */; };
+		EFA2ACE8205FCA88009B8449 /* YJProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = EFA2ACE5205FCA87009B8449 /* YJProgressHUD.m */; };
+		EFA2ACE9205FCA88009B8449 /* images.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EFA2ACE6205FCA87009B8449 /* images.bundle */; };
+		EFA2ACEC205FCF33009B8449 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = EFA2ACEA205FCF33009B8449 /* MBProgressHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -129,6 +132,11 @@
 		EF80679E2057C287003CF9D1 /* DCFlipAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DCFlipAnimation.h; sourceTree = "<group>"; };
 		EF80679F2057C287003CF9D1 /* DCFlipAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DCFlipAnimation.m; sourceTree = "<group>"; };
 		EFA2ACD3205F8802009B8449 /* 龙王传说.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "龙王传说.txt"; sourceTree = "<group>"; };
+		EFA2ACE5205FCA87009B8449 /* YJProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJProgressHUD.m; sourceTree = "<group>"; };
+		EFA2ACE6205FCA87009B8449 /* images.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = images.bundle; sourceTree = "<group>"; };
+		EFA2ACE7205FCA87009B8449 /* YJProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJProgressHUD.h; sourceTree = "<group>"; };
+		EFA2ACEA205FCF33009B8449 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		EFA2ACEB205FCF33009B8449 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -335,6 +343,7 @@
 		EF8067822057A007003CF9D1 /* DCBooks */ = {
 			isa = PBXGroup;
 			children = (
+				EFA2ACDD205FC943009B8449 /* MBHud */,
 				EF746AE1205BB52500D38D9F /* tool */,
 				EF67CF83205A5A63002E3DC1 /* MJRefresh */,
 				EF67CF7C205A49FA002E3DC1 /* other */,
@@ -353,6 +362,26 @@
 				EFA2ACD3205F8802009B8449 /* 龙王传说.txt */,
 			);
 			path = DCBooks;
+			sourceTree = "<group>";
+		};
+		EFA2ACDD205FC943009B8449 /* MBHud */ = {
+			isa = PBXGroup;
+			children = (
+				EFA2ACE4205FCA87009B8449 /* YJProgressHUDK */,
+			);
+			path = MBHud;
+			sourceTree = "<group>";
+		};
+		EFA2ACE4205FCA87009B8449 /* YJProgressHUDK */ = {
+			isa = PBXGroup;
+			children = (
+				EFA2ACEB205FCF33009B8449 /* MBProgressHUD.h */,
+				EFA2ACEA205FCF33009B8449 /* MBProgressHUD.m */,
+				EFA2ACE7205FCA87009B8449 /* YJProgressHUD.h */,
+				EFA2ACE5205FCA87009B8449 /* YJProgressHUD.m */,
+				EFA2ACE6205FCA87009B8449 /* images.bundle */,
+			);
+			path = YJProgressHUDK;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -414,6 +443,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF8067902057A007003CF9D1 /* LaunchScreen.storyboard in Resources */,
+				EFA2ACE9205FCA88009B8449 /* images.bundle in Resources */,
 				EF80678D2057A007003CF9D1 /* Assets.xcassets in Resources */,
 				EFA2ACD4205F8802009B8449 /* 龙王传说.txt in Resources */,
 				EF80678B2057A007003CF9D1 /* Main.storyboard in Resources */,
@@ -450,12 +480,14 @@
 				EF67CFB7205A5A63002E3DC1 /* UIView+MJExtension.m in Sources */,
 				EF8067A02057C287003CF9D1 /* DCFlipAnimation.m in Sources */,
 				EF67CFBA205A5A63002E3DC1 /* MJRefreshBackNormalFooter.m in Sources */,
+				EFA2ACEC205FCF33009B8449 /* MBProgressHUD.m in Sources */,
 				EF711F742058F592002D088F /* DCPageTopView.m in Sources */,
 				EF67CF82205A5201002E3DC1 /* DCBookModel.m in Sources */,
 				EF67CFC3205A5A63002E3DC1 /* MJRefreshBackFooter.m in Sources */,
 				EF67CFC0205A5A63002E3DC1 /* MJRefreshGifHeader.m in Sources */,
 				EF67CFBD205A5A63002E3DC1 /* MJRefreshAutoNormalFooter.m in Sources */,
 				EF80679D2057ADF5003CF9D1 /* DCPageView.m in Sources */,
+				EFA2ACE8205FCA88009B8449 /* YJProgressHUD.m in Sources */,
 				EF67CFB2205A5A63002E3DC1 /* UIScrollView+MJRefresh.m in Sources */,
 				EF67CFBB205A5A63002E3DC1 /* MJRefreshAutoStateFooter.m in Sources */,
 				EF711F6E2058D3DF002D088F /* UITableView+SDAutoTableViewCellHeight.m in Sources */,

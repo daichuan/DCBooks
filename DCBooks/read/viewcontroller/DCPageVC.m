@@ -12,12 +12,13 @@
 #import "DCPageTopView.h"
 #import "DCPageBottomView.h"
 #import "DCBookListView.h"
+
+#import "YJProgressHUD.h"
 @interface DCPageVC () <UIPageViewControllerDelegate, UIPageViewControllerDataSource,DCPageBottomViewDelegate,DCPageTopViewDelegate,DCBookListViewDelgate,UIGestureRecognizerDelegate>
 {
     CGSize _contentSize;
 }
 @property (nonatomic, strong) UIPageViewController *pageViewController;
-@property (nonatomic,copy) NSString *fontName;
 @property (nonatomic,strong) DCPageTopView *topView;
 @property (nonatomic,strong) DCPageBottomView *bottomView;
 @property (nonatomic,strong) DCBookListView *listView;//目录视图
@@ -30,7 +31,7 @@
 @property (nonatomic,strong) NSArray *list; //目录
 @property (nonatomic,strong) NSArray *chapterArr;//拆分成章节的数组
 @property (nonatomic, strong) NSArray<NSMutableAttributedString *> *pageContentArray;
-@property (nonatomic,strong) UIFont *textFont;
+@property (nonatomic,copy) NSString *textFontSize;
 
 @end
 
@@ -82,14 +83,14 @@
 -(void)initialization
 {
 
-    self.textFont = [[NSUserDefaults standardUserDefaults]objectForKey:DCTextFont];
-    if(!self.textFont)
+    self.textFontSize = [[NSUserDefaults standardUserDefaults]objectForKey:DCTextFontSize];
+    if(!self.textFontSize)
     {
-        self.textFont = DCDefaultTextFont;
+        self.textFontSize = [NSString stringWithFormat:@"%d",DCDefaultTextFontSize];
+        [[NSUserDefaults standardUserDefaults] setObject:self.textFontSize forKey:DCTextFontSize];
     }
     
-    _attributeDict = @{NSFontAttributeName:self.textFont};
-
+    _attributeDict = @{NSFontAttributeName:[UIFont fontWithName:DCDefaultTextFontName size:self.textFontSize.intValue]};
     _currentIndex = 0;
     _currentChapter = 0;
     _contentSize = kContentSize;
@@ -188,7 +189,7 @@
 }
 -(void)setUpFontClick:(DCSetupFontType)type
 {
-    CGFloat fontSize = self.textFont.pointSize;
+    int fontSize = self.textFontSize.intValue;
     if(type == DCSetupFontTypeAdd)
     {
         //字体变大
@@ -197,28 +198,17 @@
         //字体缩小
         fontSize-=2;
     }
-    self.textFont = [UIFont fontWithName:@"PingFang SC" size:fontSize];
+    self.textFontSize = [NSString stringWithFormat:@"%d",fontSize];
+    _attributeDict = @{NSFontAttributeName:[UIFont fontWithName:DCDefaultTextFontName size:fontSize]};
+
     //存储字体大小
-    [[NSUserDefaults standardUserDefaults] setObject:self.textFont forKey:DCTextFont];
-    _attributeDict = @{NSFontAttributeName:self.textFont};
+    [[NSUserDefaults standardUserDefaults] setObject:self.textFontSize forKey:DCTextFontSize];
     
     //重新计算分页
     [self loadChapterContentWithIndex:_currentChapter];
     self.currentVC.content = self.pageContentArray[_currentIndex];
     
-    //显示了则退回去
-    [UIView animateWithDuration:0.3 animations:^{
-        //显示了则退回去
-        self.topView.transform = CGAffineTransformIdentity;
-        self.bottomView.transform = CGAffineTransformIdentity;
-    }completion:^(BOOL finished) {
-        self.topView.hidden = YES;
-        self.bottomView.hidden = YES;
-    }];
-    
-    self.toolViewShow = NO;
-    //更新状态栏是不是显示
-    [self setNeedsStatusBarAppearanceUpdate];
+    [YJProgressHUD showMsgWithoutView:[NSString stringWithFormat:@"字体\n%@",self.textFontSize]];
 }
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     if(_currentIndex == 0 && _currentChapter == 0)
