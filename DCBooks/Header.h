@@ -23,14 +23,13 @@
 
 #define toolH is5_8inches?84:64
 
-#define DCTextFont [UIFont fontWithName:@"PingFang SC" size:20]
+#define DCDefaultTextFont [UIFont fontWithName:@"PingFang SC" size:20]
 
 //NSUserDefault
 #define DCReadMode @"DCReadMode"//阅读模式
 #define DCReadDefaultMode @"DCReadDefaultMode"//默认模式（白天）
 #define DCReadNightMode @"DCReadNightMode"//夜间模式
-
+#define DCTextFont @"DCTextFont"
 #define DCCurrentPage @"DCCurrentPage"
-
 #define DCBooksPath  [[DCFileTool getDocumentPath] stringByAppendingPathComponent:@"mybooks"] //书籍存放目录
 

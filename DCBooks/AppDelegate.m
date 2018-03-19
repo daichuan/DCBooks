@@ -27,9 +27,6 @@
     //创建根目录
     [DCFileTool creatRootDirectory];
     NSLog(@"%@",DCBooksPath);
-
-//    NSArray *arr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:DCBooksPath error:nil];
-//    NSLog(@"arr = %@",arr);
     
     //设置默认信息
     if(![[NSUserDefaults standardUserDefaults] objectForKey:DCReadMode])

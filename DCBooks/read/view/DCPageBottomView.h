@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+
+typedef enum: NSUInteger{
+    DCSetupFontTypeAdd,
+    DCSetupFontTypeSubtract ,
+}DCSetupFontType;
+
 @protocol DCPageBottomViewDelegate<NSObject>
 
 -(void)readModeClick:(UIButton *)btn;
 -(void)listClick:(UIButton *)btn;
+-(void)setUpFontClick:(DCSetupFontType)type;
 
 @end
 

@@ -12,7 +12,8 @@
 @interface DCPageBottomView()
 @property (nonatomic,strong) UIButton *listBtn;
 @property (nonatomic,strong) UIButton *nightModeBtn;
-@property (nonatomic,strong) UIButton *fontBtn;
+@property (nonatomic,strong) UIButton *fontAddBtn;
+@property (nonatomic,strong) UIButton *fontSubtractBtn;
 
 @end
 
@@ -37,16 +38,19 @@
     CGFloat btnW = 25;
     CGFloat btnH = btnW;
     CGFloat btnY = 20;
+    CGFloat btnSpace = (self.width - 25*4 - 15*2) / 3;
 
-    self.listBtn.frame = CGRectMake(30, btnY, btnW, btnH);
-    self.nightModeBtn.frame = CGRectMake(self.width*0.5 - 12, btnY, btnW, btnH);
-    self.fontBtn.frame = CGRectMake(self.width - 30 - btnW, btnY, btnW, btnH);
+    self.listBtn.frame = CGRectMake(15, btnY, btnW, btnH);
+    self.nightModeBtn.frame = CGRectMake(self.listBtn.right + btnSpace, btnY, btnW, btnH);
+    self.fontAddBtn.frame = CGRectMake(self.nightModeBtn.right + btnSpace, btnY, btnW, btnH);
+    self.fontSubtractBtn.frame = CGRectMake(self.fontAddBtn.right + btnSpace, btnY, btnW, btnH);
 }
 -(void)setupUI
 {
     [self addSubview:self.listBtn];
     [self addSubview:self.nightModeBtn];
-    [self addSubview:self.fontBtn];
+    [self addSubview:self.fontAddBtn];
+    [self addSubview:self.fontSubtractBtn];
     
     NSString *readModel = [[NSUserDefaults standardUserDefaults] objectForKey:DCReadMode];
     if([readModel isEqualToString:DCReadNightMode])
@@ -71,9 +75,18 @@
         [self.delegate readModeClick:btn];
     }
 }
--(void)setupFont
+-(void)setupFont:(UIButton *)btn
 {
-    NSLog(@"setupFont");
+    if([self.delegate respondsToSelector:@selector(setUpFontClick:)])
+    {
+        if(btn.tag == 10001)
+        {
+            [self.delegate setUpFontClick:DCSetupFontTypeAdd];
+        }else
+        {
+            [self.delegate setUpFontClick:DCSetupFontTypeSubtract];
+        }
+    }
 }
 -(UIButton *)listBtn
 {
@@ -101,17 +114,28 @@
     }
     return _nightModeBtn;
 }
--(UIButton *)fontBtn
+-(UIButton *)fontAddBtn
 {
-    if(_fontBtn == nil)
+    if(_fontAddBtn == nil)
     {
-        _fontBtn = [[UIButton alloc]init];
-        [_fontBtn setTitle:@"Aa" forState:UIControlStateNormal];
-        [_fontBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_fontBtn addTarget:self action:@selector(setupFont) forControlEvents:UIControlEventTouchUpInside];
-        //        [_listBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        _fontAddBtn = [[UIButton alloc]init];
+        [_fontAddBtn setTitle:@"A+" forState:UIControlStateNormal];
+        _fontAddBtn.tag = 10001;
+        [_fontAddBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_fontAddBtn addTarget:self action:@selector(setupFont:) forControlEvents:UIControlEventTouchUpInside];
     }
-    return _fontBtn;
+    return _fontAddBtn;
 }
-
+-(UIButton *)fontSubtractBtn
+{
+    if(_fontSubtractBtn == nil)
+    {
+        _fontSubtractBtn = [[UIButton alloc]init];
+        [_fontSubtractBtn setTitle:@"A-" forState:UIControlStateNormal];
+        _fontSubtractBtn.tag = 10002;
+        [_fontSubtractBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_fontSubtractBtn addTarget:self action:@selector(setupFont:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _fontSubtractBtn;
+}
 @end

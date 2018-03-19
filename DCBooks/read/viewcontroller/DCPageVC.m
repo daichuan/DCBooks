@@ -30,6 +30,7 @@
 @property (nonatomic,strong) NSArray *list; //目录
 @property (nonatomic,strong) NSArray *chapterArr;//拆分成章节的数组
 @property (nonatomic, strong) NSArray<NSMutableAttributedString *> *pageContentArray;
+@property (nonatomic,strong) UIFont *textFont;
 
 @end
 
@@ -80,8 +81,15 @@
 }
 -(void)initialization
 {
-//    NSString *page = [[NSUserDefaults standardUserDefaults] objectForKey:DCCurrentPage];
-//    _currentIndex = page.integerValue;
+
+    self.textFont = [[NSUserDefaults standardUserDefaults]objectForKey:DCTextFont];
+    if(!self.textFont)
+    {
+        self.textFont = DCDefaultTextFont;
+    }
+    
+    _attributeDict = @{NSFontAttributeName:self.textFont};
+
     _currentIndex = 0;
     _currentChapter = 0;
     _contentSize = kContentSize;
@@ -175,9 +183,43 @@
     {
         [[NSUserDefaults standardUserDefaults] setObject:DCReadDefaultMode forKey:DCReadMode];
     }
+    //更新UI
     [vc updateUI];
 }
-
+-(void)setUpFontClick:(DCSetupFontType)type
+{
+    CGFloat fontSize = self.textFont.pointSize;
+    if(type == DCSetupFontTypeAdd)
+    {
+        //字体变大
+        fontSize+=2;
+    }else{
+        //字体缩小
+        fontSize-=2;
+    }
+    self.textFont = [UIFont fontWithName:@"PingFang SC" size:fontSize];
+    //存储字体大小
+    [[NSUserDefaults standardUserDefaults] setObject:self.textFont forKey:DCTextFont];
+    _attributeDict = @{NSFontAttributeName:self.textFont};
+    
+    //重新计算分页
+    [self loadChapterContentWithIndex:_currentChapter];
+    self.currentVC.content = self.pageContentArray[_currentIndex];
+    
+    //显示了则退回去
+    [UIView animateWithDuration:0.3 animations:^{
+        //显示了则退回去
+        self.topView.transform = CGAffineTransformIdentity;
+        self.bottomView.transform = CGAffineTransformIdentity;
+    }completion:^(BOOL finished) {
+        self.topView.hidden = YES;
+        self.bottomView.hidden = YES;
+    }];
+    
+    self.toolViewShow = NO;
+    //更新状态栏是不是显示
+    [self setNeedsStatusBarAppearanceUpdate];
+}
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     if(_currentIndex == 0 && _currentChapter == 0)
     {
@@ -194,7 +236,6 @@
         //不是第一页，则页码减一
         _currentIndex--;
     }
-
     return [self viewControllerAtIndex:_currentIndex];
 }
 
@@ -300,14 +341,7 @@
     }
     return _pageViewController;
 }
--(NSDictionary *)attributeDict
-{
-    if(_attributeDict == nil)
-    {
-        _attributeDict = @{NSFontAttributeName:[UIFont fontWithName:@"PingFang SC" size:20],NSForegroundColorAttributeName:[UIColor darkGrayColor]};
-    }
-    return _attributeDict;
-}
+
 -(DCPageTopView *)topView
 {
     if(_topView == nil)

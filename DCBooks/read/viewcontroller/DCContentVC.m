@@ -140,7 +140,7 @@
     if(_textView == nil)
     {
         _textView = [[UITextView alloc]init];
-        _textView.font = DCTextFont;
+        _textView.font = DCDefaultTextFont;
         _textView.backgroundColor = [UIColor clearColor];
         _textView.editable = NO;
         _textView.scrollEnabled = NO;
